@@ -1,9 +1,17 @@
+<<<<<<< Updated upstream
 import React, { useRef, useContext, useState } from "react";
+=======
+import React, { useRef, useContext } from "react";
+>>>>>>> Stashed changes
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { WhiteCenteredContainer } from "../../common";
 import "./style.css";
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../../../context";
+import { getLocation, putLocation, addLocation, putLoc } from "../../../utils/firebase/firebase.utils";
 
+
+<<<<<<< Updated upstream
 import { FirebaseContext } from "../../../context";
 
 export default function Events({ location }) {
@@ -32,6 +40,76 @@ export default function Events({ location }) {
 
     alert("New event created!");
   };
+=======
+export default function Events() {
+  
+  const { currentAdmin } = useContext(UserContext);
+  const refStart = useRef();
+  const refEnd = useRef();
+
+  const submitForm = async (event) => {
+    event.preventDefault();
+
+    const start = new Date((event.target.startDay.value + " " + event.target.startTime.value).replace(/-/g,"/"));
+    const end = new Date((event.target.endDay.value + " " + event.target.endTime.value).replace(/-/g,"/"));
+
+    // const addAddress = {
+    //   locationName:"Black Barrell",
+    //   address: "296 E Columbia St, New Westminster, BC V3L 0E3"
+    // }
+
+    
+    //await getLocation(eventToAdd)
+    // await putLocation(eventToAdd)
+    // putLoc(addAddress)
+    let currLoc = await getLocation("Black Barrell") //should get it from currentAdmin
+    console.log(await getLocation("Black Barrell"))
+    const eventToAdd = {
+        eventDateFrom: start,
+        eventDateTo: end,
+        eventDescription: event.target.inputDesc.value,
+        eventName: event.target.eventName.value,
+    }
+    
+    const newEvents = currLoc.events.push(eventToAdd)
+    const updDoc = {
+      locationName: "Black Barrell", //should get it from currentAdmin,
+      events: newEvents
+    }
+
+    putLoc(updDoc)
+
+    console.log(await getLocation("Black Barrell"))
+    
+    // console.log(new Date(test.events.eventDateFrom.seconds*1000))
+
+
+    // console.log(new Date(timestamp.seconds*1000))
+
+    
+    // putLocation()
+    
+  }
+  return <WhiteCenteredContainer > 
+    <Row className="m-3"><p >NEW EVENT</p> </Row>
+    
+
+    <Form id="eventForm" onSubmit={submitForm}> 
+    
+      <Row className="m-3">
+				<Col>
+					<Form.Label className="label">Event Name:</Form.Label>
+				</Col>
+				<Col xs={12} md={8}>
+					<Form.Control
+						className="inputForm"
+						type="text"
+            id="eventName"
+
+					/>
+				</Col>
+			</Row>
+>>>>>>> Stashed changes
 
   const onInputChangeHandler = (e) => {
     const { name, value } = e.target;

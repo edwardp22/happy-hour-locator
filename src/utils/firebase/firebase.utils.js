@@ -21,8 +21,12 @@ import {
   query,
   getDocs,
   deleteDoc,
+<<<<<<< Updated upstream
   addDoc,
   where,
+=======
+  updateDoc
+>>>>>>> Stashed changes
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -187,6 +191,11 @@ const addUpdateDocument = async (collectionKey, object, documentKey) => {
     await addDoc(docRef, object);
   }
 };
+// General function to save one record v2
+const addUpdateDoc = async (collectionKey, documentKey, object) => {
+  const docRef = doc(db, collectionKey, documentKey);
+  await updateDoc(docRef, object);
+};
 
 /**
  * General function to get the data from firebase
@@ -314,4 +323,8 @@ export const getAdditional = async (queries = []) => {
 
 export const deleteAdditional = async (id) => {
   return deleteDocument("usersAdditionals", id);
+};
+
+export const putLoc = async (document = {}) => {
+  return addUpdateDoc("locations", document.locationName, document);
 };
